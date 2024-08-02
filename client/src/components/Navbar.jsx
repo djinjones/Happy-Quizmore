@@ -1,12 +1,18 @@
 
 import styled from 'styled-components';
+import backgroundImage from '../assets/images/billy-madison.jpg';
 
 const Nav = styled.nav`
-  display: flex;
+   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #333;
+  background-color: white;
+  background-image: url(${backgroundImage});
+  background-position: center top;
+  background-size: contain; /* Adjust this value if needed */
+  height: 300px; /* Adjust the height as needed to fit the head */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
 `;
 
 const NavLinks = styled.div`
@@ -17,7 +23,7 @@ const NavLinks = styled.div`
 const NavLink = styled.button`
   background: none;
   border: none;
-  color: white;
+  color: black;
   cursor: pointer;
   font-size: 1em;
 
