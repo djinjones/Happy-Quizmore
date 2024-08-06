@@ -60,7 +60,7 @@ function App() {
         setIsSignedIn={setIsSignedIn}
         isSignedIn={isSignedIn}
       />
-      <AppTitle>Happy Quizzmore</AppTitle>
+      <AppTitle>Happy Quizmore</AppTitle>
       <StartQuizButton onClick={handleStartQuiz}>Start Quiz</StartQuizButton>
       {startQuiz && <Quiz />}
       {showSignup && <SignupModal setShowSignup={setShowSignup} />}
