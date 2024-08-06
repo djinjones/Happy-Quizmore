@@ -32,11 +32,27 @@ const LoginModal = ({ setShowLogin, setIsSignedIn }) => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Perform login logic here (e.g., call to backend API)
-    // If successful:
-    setIsSignedIn(true);
-    setShowLogin(false);
+    fetch('http://localhost:5000/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        setIsSignedIn(true);
+        setShowLogin(false);
+        // Store the token if needed
+        localStorage.setItem('token', data.token);
+      } else {
+        // Handle errors here
+        console.error(data.message);
+      }
+    });
   };
+  
 
   return (
     <ModalBackground>

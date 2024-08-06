@@ -1,5 +1,4 @@
-// src/components/SignupModal.jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const ModalBackground = styled.div`
@@ -65,10 +64,24 @@ const SignupModal = ({ setShowSignup }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Perform signup logic here (e.g., call to backend API)
-    console.log({ username, email, password });
-    setShowSignup(false);
+    fetch('http://localhost:5000/api/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, email, password }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        setShowSignup(false);
+      } else {
+        // Handle errors here
+        console.error(data.message);
+      }
+    });
   };
+  
 
   return (
     <ModalBackground>
