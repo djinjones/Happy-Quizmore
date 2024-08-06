@@ -95,7 +95,6 @@ const LoginModal = ({ setShowLogin, setIsSignedIn }) => {
       <ModalContainer>
         <CloseButton onClick={() => setShowLogin(false)}>X</CloseButton>
         <h2>Login</h2>
-<<<<<<< HEAD
         {error && <ErrorMessage>{error}</ErrorMessage>}
         <Form onSubmit={handleLogin}>
           <Input
@@ -114,7 +113,6 @@ const LoginModal = ({ setShowLogin, setIsSignedIn }) => {
           />
           <SubmitButton type="submit">Login</SubmitButton>
         </Form>
-=======
         <label htmlFor="username" className='modal-label'> Username: </label>
         <input
           type="username"
@@ -130,7 +128,6 @@ const LoginModal = ({ setShowLogin, setIsSignedIn }) => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button onClick={handleLogin}>Login</button>
->>>>>>> 5925966cdc004c1c7eaf429985db66304f251219
       </ModalContainer>
     </ModalBackground>
   );

@@ -7,8 +7,6 @@ import SignupModal from './components/SignupModal';
 import LoginModal from './components/LoginModal';
 
 
-<<<<<<< HEAD
-=======
 /* code for using outlet and apollo client will only work when apollo client is set up in the server. 
 As of monday 8/5 these changes have been untested but i believe they should work -Dan
 import { StoreProvider } from './utils/globalState';
@@ -43,7 +41,6 @@ const client = new ApolloClient({
 
 */
 
->>>>>>> 5925966cdc004c1c7eaf429985db66304f251219
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: Arial, sans-serif;
@@ -100,24 +97,6 @@ function App() {
   };
 
   return (
-<<<<<<< HEAD
-    <ThemeProvider theme={theme}>
-    <AppContainer>
-      <GlobalStyle />
-      <Navbar
-        setShowSignup={setShowSignup}
-        setShowLogin={setShowLogin}
-        setIsSignedIn={setIsSignedIn}
-        isSignedIn={isSignedIn}
-      />
-      <AppTitle>Happy Quizmore</AppTitle>
-      <StartQuizButton onClick={handleStartQuiz}>Start Quiz</StartQuizButton>
-      {startQuiz && <Quiz />}
-      {showSignup && <SignupModal setShowSignup={setShowSignup} />}
-      {showLogin && <LoginModal setShowLogin={setShowLogin} setIsSignedIn={setIsSignedIn} />}
-    </AppContainer>
-    </ThemeProvider>
-=======
 
       <AppContainer>
         <GlobalStyle />
@@ -134,7 +113,6 @@ function App() {
         {showLogin && <LoginModal setShowLogin={setShowLogin} setIsSignedIn={setIsSignedIn} />}
       </AppContainer>
 
->>>>>>> 5925966cdc004c1c7eaf429985db66304f251219
   );
 }
 
