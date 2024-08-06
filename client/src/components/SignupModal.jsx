@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-
+import SignupForm from './SignupForm'
 const ModalBackground = styled.div`
   position: fixed;
   top: 0;
@@ -98,6 +98,7 @@ const SignupModal = ({ setShowSignup }) => {
       <ModalContainer>
         <CloseButton onClick={() => setShowSignup(false)}>X</CloseButton>
         <h2>Signup</h2>
+<<<<<<< HEAD
         {error && <ErrorMessage>{error}</ErrorMessage>}
         <Form onSubmit={handleSubmit}>
           <Input
@@ -123,6 +124,9 @@ const SignupModal = ({ setShowSignup }) => {
           />
           <SubmitButton type="submit">Signup</SubmitButton>
         </Form>
+=======
+        <SignupForm />
+>>>>>>> 5925966cdc004c1c7eaf429985db66304f251219
       </ModalContainer>
     </ModalBackground>
   );
