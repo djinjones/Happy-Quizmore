@@ -19,6 +19,7 @@ const ModalContainer = styled.div`
   border-radius: 4px;
   max-width: 400px;
   width: 100%;
+  position: relative;
 `;
 
 const CloseButton = styled.button`
@@ -57,13 +58,23 @@ const SubmitButton = styled.button`
   }
 `;
 
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 0.9em;
+`;
+
 const SignupModal = ({ setShowSignup }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!username || !email || !password) {
+      setError('All fields are required!');
+      return;
+    }
     fetch('http://localhost:5000/api/signup', {
       method: 'POST',
       headers: {
@@ -76,18 +87,18 @@ const SignupModal = ({ setShowSignup }) => {
       if (data.success) {
         setShowSignup(false);
       } else {
-        // Handle errors here
-        console.error(data.message);
+        setError(data.message);
       }
-    });
+    })
+    .catch(() => setError('An error occurred. Please try again.'));
   };
-  
 
   return (
     <ModalBackground>
       <ModalContainer>
         <CloseButton onClick={() => setShowSignup(false)}>X</CloseButton>
         <h2>Signup</h2>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <Form onSubmit={handleSubmit}>
           <Input
             type="text"

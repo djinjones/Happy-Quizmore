@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import styled from 'styled-components';
 
@@ -18,6 +17,9 @@ const ModalContainer = styled.div`
   background: white;
   padding: 20px;
   border-radius: 4px;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
 `;
 
 const CloseButton = styled.button`
@@ -25,13 +27,49 @@ const CloseButton = styled.button`
   border: none;
   font-size: 1.2em;
   cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const Input = styled.input`
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+`;
+
+const SubmitButton = styled.button`
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  &:hover {
+    background-color: #45a049;
+  }
+`;
+
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 0.9em;
 `;
 
 const LoginModal = ({ setShowLogin, setIsSignedIn }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = (e) => {
+    e.preventDefault();
     fetch('http://localhost:5000/api/login', {
       method: 'POST',
       headers: {
@@ -44,34 +82,37 @@ const LoginModal = ({ setShowLogin, setIsSignedIn }) => {
       if (data.success) {
         setIsSignedIn(true);
         setShowLogin(false);
-        // Store the token if needed
         localStorage.setItem('token', data.token);
       } else {
-        // Handle errors here
-        console.error(data.message);
+        setError(data.message);
       }
-    });
+    })
+    .catch(() => setError('An error occurred. Please try again.'));
   };
-  
 
   return (
     <ModalBackground>
       <ModalContainer>
         <CloseButton onClick={() => setShowLogin(false)}>X</CloseButton>
         <h2>Login</h2>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button onClick={handleLogin}>Login</button>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        <Form onSubmit={handleLogin}>
+          <Input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <SubmitButton type="submit">Login</SubmitButton>
+        </Form>
       </ModalContainer>
     </ModalBackground>
   );

@@ -6,6 +6,7 @@ import Quiz from './components/Quiz';
 import SignupModal from './components/SignupModal';
 import LoginModal from './components/LoginModal';
 
+
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: Arial, sans-serif;
@@ -52,6 +53,7 @@ function App() {
   };
 
   return (
+    <ThemeProvider theme={theme}>
     <AppContainer>
       <GlobalStyle />
       <Navbar
@@ -66,6 +68,7 @@ function App() {
       {showSignup && <SignupModal setShowSignup={setShowSignup} />}
       {showLogin && <LoginModal setShowLogin={setShowLogin} setIsSignedIn={setIsSignedIn} />}
     </AppContainer>
+    </ThemeProvider>
   );
 }
 
