@@ -43,12 +43,14 @@ const LoginModal = ({ setShowLogin, setIsSignedIn }) => {
       <ModalContainer>
         <CloseButton onClick={() => setShowLogin(false)}>X</CloseButton>
         <h2>Login</h2>
+        <label htmlFor="username" className='modal-label'> Username: </label>
         <input
-          type="text"
+          type="username"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
+        <label htmlFor="password" className='modal-label'> Password: </label>
         <input
           type="password"
           placeholder="Password"

@@ -1,6 +1,6 @@
 
 import styled from 'styled-components';
-
+import SignupForm from './SignupForm'
 const ModalBackground = styled.div`
   position: fixed;
   top: 0;
@@ -32,7 +32,7 @@ const SignupModal = ({ setShowSignup }) => {
       <ModalContainer>
         <CloseButton onClick={() => setShowSignup(false)}>X</CloseButton>
         <h2>Signup</h2>
-        {/* Signup form goes here */}
+        <SignupForm />
       </ModalContainer>
     </ModalBackground>
   );
