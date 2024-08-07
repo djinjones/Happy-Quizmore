@@ -61,7 +61,7 @@ function SignupForm() {
             </form>
         </>
     );
-};
+}
 
 export default SignupForm;
 
