@@ -93,18 +93,13 @@ const SignupModal = ({ setShowSignup }) => {
     // });
 
     // below is just a test use the above code for the mutation for creating a new user
-    const emailTest= "emailTest";
-    const passwordTest = "passwordTest";
-    const firstNameTest = "firstNameTest";
-    const lastNameTest = "lastNameTest";
+    
 
     try { 
       const mutationResponse = await addUser({
         variables: {
-          email: emailTest,
-          password: passwordTest,
-          firstName: firstNameTest,
-          lastName: lastNameTest,
+                username: username,
+                password: password,
         },
       });
 
