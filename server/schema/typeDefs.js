@@ -22,10 +22,8 @@ const typeDefs = `
 
   type User {
     _id: ID
-    firstName: String
-    lastName: String
-    email: String
-    orders: [Order]
+    userName: String
+    password: String
   }
 
   type Checkout {

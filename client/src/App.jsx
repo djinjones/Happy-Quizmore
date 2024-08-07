@@ -23,7 +23,7 @@ import { setContext } from '@apollo/client/link/context';
 const httpLink = createHttpLink({
   uri: '/graphql',
 });
-
+console.log("26", httpLink)
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token');
   return {
@@ -38,7 +38,7 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
-
+console.log(client.link)
 
 
 const GlobalStyle = createGlobalStyle`
