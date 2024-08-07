@@ -7,11 +7,12 @@ export default defineConfig({
   server: {
     host: '0.0.0.0', // specify the host
     port: 3001, // specify the port
+    open: true, 
     strictPort: true, // if true, exit if the port is already in use
     proxy: {
       // proxy requests matching the context to the target
-      '/api': {
-        target: 'http://localhost:4000',
+      '/graphql': {
+        target: 'http://localhost:3001',
         changeOrigin: true,
         secure: false,
       },
