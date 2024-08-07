@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import SignupForm from './SignupForm'
+import SignupForm from './SignupForm';
+
 const ModalBackground = styled.div`
   position: fixed;
   top: 0;
