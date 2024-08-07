@@ -6,26 +6,26 @@ export const reducer = (state, action) => {
     let answer = [action.answer];
     const apiUrl = `http//:localhost/3000/api/${answer}`
 
-    switch(action.type) {
-        case SUBMIT_ANSWER: 
-        return {
-            ...state, 
-            answer: [action.answer],
-        };
+    switch (action.type) {
+        case SUBMIT_ANSWER:
+            return {
+                ...state,
+                answer: [action.answer],
+            };
 
         case SHOW_ANSWER:
 
-        async function getAnswer() {
-            try {
-                const correctAnswer = await fetch(apiUrl)
-            } catch (error) {
-                console.error(error);
+            async function getAnswer() {
+                try {
+                    const correctAnswer = await fetch(apiUrl)
+                } catch (error) {
+                    console.error(error);
+                }
             }
-        }
 
-        return {
-            ...state,
+            return {
+                ...state,
 
-        }
+            }
     }
 }

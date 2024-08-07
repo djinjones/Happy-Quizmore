@@ -38,9 +38,9 @@ const Image = styled.img`
 `;
 
 const SubmitButton = styled.button`
-  background-color: #4CAF50;
+  background-color: ${({ theme }) => theme.colors.primary};
   color: white;
-  padding: 10px 20px;
+  padding: ${({ theme }) => theme.spacing.medium};
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -50,11 +50,15 @@ const SubmitButton = styled.button`
   }
 `;
 
+
+
+
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [result, setResult] = useState(null);
+
 
   useEffect(() => {
     fetch('http://localhost:5000/api/questions')
