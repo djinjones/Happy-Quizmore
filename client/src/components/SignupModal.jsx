@@ -74,9 +74,9 @@ const SignupModal = ({ setShowSignup }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   // The following code addUser() needs to be added into the server before it works on the front end
-  const [addUser] = useMutation(ADD_USER);
+  const [addUser, {err}] = useMutation(ADD_USER);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, ) => {
     e.preventDefault();
     if (!username || !password) {
       setError('All fields are required!');
@@ -85,16 +85,7 @@ const SignupModal = ({ setShowSignup }) => {
 
     console.log(username, password)
     // use mutation to add new user to database here 
-    // const mutationResponse = await addUser({
-    //   variables: {
-    //     username: username,
-    //     password: password,
-    //   },
-    // });
-
-    // below is just a test use the above code for the mutation for creating a new user
-    
-
+    console.log(addUser)
     try { 
       const mutationResponse = await addUser({
         variables: {
@@ -106,6 +97,7 @@ const SignupModal = ({ setShowSignup }) => {
       console.log("mutation response: ", mutationResponse)
       
       if (!mutationResponse.data || !mutationResponse.data.addUser || !mutationResponse.data.addUser.token) {
+        console.log(mutationResponse.data, mutationResponse.data.addUser, mutationResponse.data.addUser.token)
         console.error("something is wrong with token recieved from database server!");
         return;
       }

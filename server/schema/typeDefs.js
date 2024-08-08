@@ -1,33 +1,9 @@
 const typeDefs = `
-  type Category {
-    _id: ID
-    name: String
-  }
-
-  type Product {
-    _id: ID
-    name: String
-    description: String
-    image: String
-    quantity: Int
-    price: Float
-    category: Category
-  }
-
-  type Order {
-    _id: ID
-    purchaseDate: String
-    products: [Product]
-  }
 
   type User {
     _id: ID
-    userName: String
-    password: String
-  }
-
-  type Checkout {
-    session: ID
+    userName: String!
+    password: String!
   }
 
   type Auth {
@@ -35,22 +11,15 @@ const typeDefs = `
     user: User
   }
 
-  input ProductInput {
+  type Question {
     _id: ID
-    purchaseQuantity: Int
-    name: String
-    image: String
-    price: Float
-    quantity: Int
+    title: String
+    url: String
   }
-
+  
   type Query {
-    categories: [Category]
-    products(category: ID, name: String): [Product]
-    product(_id: ID!): Product
-    user: User
-    order(_id: ID!): Order
-    checkout(products: [ProductInput]): Checkout
+  users: [User]
+  questions: [Question]
   }
 
   type Mutation {
