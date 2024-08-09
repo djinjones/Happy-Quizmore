@@ -9,7 +9,7 @@ const resolvers = {
       return await User.find({});
     },
 
-    Question: async () => {
+    questions: async () => {
       return await Question.find({})
     },
     
