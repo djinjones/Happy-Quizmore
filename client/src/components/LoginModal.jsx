@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { useMutation } from '@apollo/client';
+import { LOGIN } from '../utils/mutations';
+import Auth from '../utils/auth';
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -67,27 +70,25 @@ const LoginModal = ({ setShowLogin, setIsSignedIn }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+ 
+ 
+ 
+  const handleLogin = async (e) => {
+    const [ login, { err } ] = useMutation(LOGIN)
 
-  const handleLogin = (e) => {
     e.preventDefault();
-    fetch('http://localhost:5000/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        setIsSignedIn(true);
-        setShowLogin(false);
-        localStorage.setItem('token', data.token);
-      } else {
-        setError(data.message);
-      }
-    })
-    .catch(() => setError('An error occurred. Please try again.'));
+    try {
+      const mutationResponse = await login({
+        variables: {username: username, password: password}
+      });
+      const token = mutationResponse.data.login.token;
+      console.log('attempting login...')
+      Auth.login(token)
+      setIsSignedIn(true);
+
+    } catch (error) {
+      console.error("error: ", error)
+    }
   };
 
   return (

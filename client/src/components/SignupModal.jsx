@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
+import { GET_USERS } from '../utils/queries'
 import Auth from '../utils/auth';
 
 // Old import SignupForm from './SignupForm';
@@ -68,13 +69,14 @@ const ErrorMessage = styled.p`
   font-size: 0.9em;
 `;
 
-const SignupModal = ({ setShowSignup }) => {
+const SignupModal = ({ setShowSignup, setIsSignedIn }) => {
   const [username, setUsername] = useState('');
   //const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   // The following code addUser() needs to be added into the server before it works on the front end
   const [addUser, {err}] = useMutation(ADD_USER);
+  const {loading, er, data} = useQuery(GET_USERS);
 
   const handleSubmit = async (e, ) => {
     e.preventDefault();
@@ -87,6 +89,17 @@ const SignupModal = ({ setShowSignup }) => {
     // use mutation to add new user to database here 
     console.log(addUser)
     try { 
+      const allUsers = data
+      for (let index = 0; index < allUsers.length ; index++) {
+        const dbUsername = allUsers[index].username;
+        if (username.toLowerCase() === dbUsername.toLowerCase()) {
+          setError('A user with that name already exists!');
+          return
+        }
+      }
+
+
+
       const mutationResponse = await addUser({
         variables: {
                 username: username,
@@ -104,7 +117,7 @@ const SignupModal = ({ setShowSignup }) => {
 
       const token = mutationResponse.data.addUser.token;
       Auth.login(token);
-
+      if (token) {setIsSignedIn(true)};
     } catch(error) {
       console.error("error during mutation: ", error)
     }
