@@ -1,7 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import styled from 'styled-components';
-import SignupForm from './SignupForm';
+import { useMutation } from '@apollo/client';
+import { ADD_USER } from '../utils/mutations';
+import Auth from '../utils/auth';
+
+// Old import SignupForm from './SignupForm';
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -67,32 +71,47 @@ const ErrorMessage = styled.p`
 
 const SignupModal = ({ setShowSignup }) => {
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
+  //const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  // The following code addUser() needs to be added into the server before it works on the front end
+  const [addUser, {err}] = useMutation(ADD_USER);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e, ) => {
     e.preventDefault();
-    if (!username || !email || !password) {
+    if (!username || !password) {
       setError('All fields are required!');
       return;
     }
-    fetch('http://localhost:5000/api/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, email, password }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        setShowSignup(false);
-      } else {
-        setError(data.message);
+
+    console.log(username, password)
+    // use mutation to add new user to database here 
+    console.log(addUser)
+    try { 
+      const mutationResponse = await addUser({
+        variables: {
+                username: username,
+                password: password,
+        },
+      });
+
+      console.log("mutation response: ", mutationResponse)
+      
+      if (!mutationResponse.data || !mutationResponse.data.addUser || !mutationResponse.data.addUser.token) {
+        console.log('data: ', mutationResponse.data, 'addUser: ', mutationResponse.data.addUser, )
+        console.error("something is wrong with token recieved from database server!");
+        return;
       }
-    })
-    .catch(() => setError('An error occurred. Please try again.'));
+
+      const token = mutationResponse.data.addUser.token;
+      Auth.login(token);
+
+    } catch(error) {
+      console.error("error during mutation: ", error)
+    }
+    
+
+    
   };
 
   return (
@@ -110,13 +129,6 @@ const SignupModal = ({ setShowSignup }) => {
             required
           />
           <Input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <Input
             type="password"
             placeholder="Password"
             value={password}
@@ -125,10 +137,44 @@ const SignupModal = ({ setShowSignup }) => {
           />
           <SubmitButton type="submit">Signup</SubmitButton>
         </Form>
-        <SignupForm />
       </ModalContainer>
     </ModalBackground>
   );
 };
 
 export default SignupModal;
+
+
+/*  
+
+<------removed email code because we dont feel that it makes sense to have to use an email for this website------>
+
+          <Input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+<---------------------------------Removed fetch logic to use mutations in graphql--------------------------------->
+
+      fetch('http://localhost:5000/api/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, email, password }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        setShowSignup(false);
+      } else {
+        setError(data.message);
+      }
+    })
+    .catch(() => setError('An error occurred. Please try again.'));
+
+
+*/

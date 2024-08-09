@@ -7,10 +7,10 @@ import SignupModal from './components/SignupModal';
 import LoginModal from './components/LoginModal';
 
 
-/* code for using outlet and apollo client will only work when apollo client is set up in the server. 
-As of monday 8/5 these changes have been untested but i believe they should work -Dan
-import { StoreProvider } from './utils/globalState';
-import { Outlet } from 'react-router-dom';
+// uncomment this code if we decide we need to switch to global store for global state
+// import { StoreProvider } from './utils/globalState';
+// import { Outlet } from 'react-router-dom';
+
 import {
   ApolloClient,
   InMemoryCache,
@@ -23,7 +23,7 @@ import { setContext } from '@apollo/client/link/context';
 const httpLink = createHttpLink({
   uri: '/graphql',
 });
-
+console.log("26", httpLink)
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token');
   return {
@@ -38,8 +38,8 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
+console.log(client.link)
 
-*/
 
 // const GlobalStyle = createGlobalStyle`
 //   body {
@@ -97,7 +97,7 @@ function App() {
   };
 
   return (
-
+    <ApolloProvider client={client}>
       <AppContainer>
         {/* <GlobalStyle /> */}
         <Navbar
@@ -112,14 +112,17 @@ function App() {
         {showSignup && <SignupModal setShowSignup={setShowSignup} />}
         {showLogin && <LoginModal setShowLogin={setShowLogin} setIsSignedIn={setIsSignedIn} />}
       </AppContainer>
+    </ApolloProvider>
+);
 
-  );
 }
 
 export default App;
 
 
-/* below is the code for using the Apollo provider and the router within react-router-dom
+/* 
+<------------------------html in apollo provider wrapper using store and outlet----------------------->
+
 return (
  <ApolloProvider client={client}>
   <Router>
@@ -142,4 +145,28 @@ return (
 </ApolloProvider> 
 );
  } 
+
+<------------------------previous code----------------------->
+
+return (
+
+      <AppContainer>
+        <GlobalStyle />
+        <Navbar
+          setShowSignup={setShowSignup}
+          setShowLogin={setShowLogin}
+          setIsSignedIn={setIsSignedIn}
+          isSignedIn={isSignedIn}
+        />
+        <AppTitle>Happy Quizzmore</AppTitle>
+        <StartQuizButton onClick={handleStartQuiz}>Start Quiz</StartQuizButton>
+        {startQuiz && <Quiz />}
+        {showSignup && <SignupModal setShowSignup={setShowSignup} />}
+        {showLogin && <LoginModal setShowLogin={setShowLogin} setIsSignedIn={setIsSignedIn} />}
+      </AppContainer>
+
+  );
+
+
+
 */

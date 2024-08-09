@@ -4,10 +4,10 @@ export const GET_QUESTIONS = gql`
     {
         questions {
         _id
-        movie
+        title
         images {
           url
-          movie
+          title
           }
         }
     }
