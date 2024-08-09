@@ -38,9 +38,9 @@ const Image = styled.img`
 `;
 
 const SubmitButton = styled.button`
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: grey;
   color: white;
-  padding: ${({ theme }) => theme.spacing.medium};
+  padding: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -97,7 +97,7 @@ const Quiz = () => {
       {questions.map((question) => (
         <QuestionContainer key={question._id}>
           <Image src={question.image} alt="movie scene" />
-          <QuestionTitle>{question.text}</QuestionTitle>
+          <QuestionTitle>Which movie is this?</QuestionTitle>
           {question.options.map((option) => (
             <OptionLabel key={option}>
               <input

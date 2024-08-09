@@ -74,7 +74,7 @@ const ErrorMessage = styled.p`
   font-size: 0.9em;
 `;
 
-const SignupModal = ({ setShowSignup, setIsSignedIn }) => {
+const SignupModal = ({ setShowSignup}) => {
   const [username, setUsername] = useState('');
   //const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -95,6 +95,7 @@ const SignupModal = ({ setShowSignup, setIsSignedIn }) => {
     console.log(addUser)
     try { 
       const allUsers = data
+      console.log(data);
       for (let index = 0; index < allUsers.length ; index++) {
         const dbUsername = allUsers[index].username;
         if (username.toLowerCase() === dbUsername.toLowerCase()) {
@@ -106,10 +107,7 @@ const SignupModal = ({ setShowSignup, setIsSignedIn }) => {
 
 
       const mutationResponse = await addUser({
-        variables: {
-                username: username,
-                password: password,
-        },
+        variables: {username: username, password: password},
       });
 
       console.log("mutation response: ", mutationResponse)
@@ -122,7 +120,7 @@ const SignupModal = ({ setShowSignup, setIsSignedIn }) => {
 
       const token = mutationResponse.data.addUser.token;
       Auth.login(token);
-      if (token) {setIsSignedIn(true)};
+      setShowSignup(false)
     } catch(error) {
       console.error("error during mutation: ", error)
     }

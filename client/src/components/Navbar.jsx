@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { FaSun, FaMoon } from 'react-icons/fa';
+import Auth from '../utils/auth'
 
 const Nav = styled.nav`
   display: flex;
@@ -64,15 +65,20 @@ const Navbar = ({ setShowSignup, setShowLogin, isSignedIn, setIsSignedIn, rotati
     <Nav rotationAngle={rotationAngle}>
       <div>Happy Quizzmore</div>
       <NavLinks>
-        {!isSignedIn && <NavLink onClick={() => setShowSignup(true)}>Signup</NavLink>}
-        {!isSignedIn && <NavLink onClick={() => setShowLogin(true)}>Login</NavLink>}
         {isSignedIn && <NavLink onClick={() => setIsSignedIn(false)}>Logout</NavLink>}
         <ThemeToggleButton onClick={toggleTheme}>
           {theme === 'light' ? <FaSun /> : <FaMoon />}
         </ThemeToggleButton>
+        {Auth.loggedIn() 
+          ? <NavLink onClick={Auth.logout()}>Logout</NavLink> 
+          : <NavLink onClick={() => setShowSignup(true)}>Signup</NavLink>}
+          {Auth.loggedIn() ? <></> : <NavLink onClick={() => setShowLogin(true)}>Login</NavLink>}
       </NavLinks>
     </Nav>
   );
 };
 
 export default Navbar;
+
+
+/**/

@@ -1,11 +1,11 @@
 
-import  { useState } from 'react';
-import styled, { ThemeProvider} from 'styled-components';
+import  { useEffect, useState } from 'react';
+import styled, { ThemeProvider } from 'styled-components';
 import Navbar from './components/Navbar';
 import Quiz from './components/Quiz';
 import SignupModal from './components/SignupModal';
 import LoginModal from './components/LoginModal';
-
+import Auth from './utils/auth'
 
 
 // uncomment this code if we decide we need to switch to global store for global state
@@ -41,6 +41,8 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 console.log(client.link)
+
+
 
 
 // const GlobalStyle = createGlobalStyle`
@@ -100,12 +102,23 @@ function App() {
   };
 
   const handleStartQuiz = () => {
-    if (isSignedIn) {
+    if (Auth.loggedIn()) {
+      alert('starting quiz...')
       setStartQuiz(true);
     } else {
       setShowLogin(true);
     }
   };
+
+  useEffect(() => {
+    // This will run when the component mounts
+    console.log(Auth.loggedIn());
+
+    // Optionally, return a cleanup function
+    return () => {
+      console.log('return!');
+    };
+  }, []);
 
   return (
     <ApolloProvider client={client}>
@@ -121,9 +134,10 @@ function App() {
             toggleTheme={toggleTheme} 
             theme={theme} 
           />
-          <AppTitle>Happy Quizzmore</AppTitle>
-          <StartQuizButton onClick={handleStartQuiz}>Start Quiz</StartQuizButton>
-          {startQuiz && <Quiz />}
+          <div>logged in: { Auth.loggedIn() }</div>
+        {Auth.loggedIn() ? <AppTitle>Welcome, Happy Quizmore time!</AppTitle> : <AppTitle>Happy Quizzmore</AppTitle>}
+        {startQuiz ? <></> : <StartQuizButton onClick={handleStartQuiz}>Start Quiz</StartQuizButton>}
+        {startQuiz && <Quiz />}
           {showSignup && <SignupModal setShowSignup={setShowSignup} />}
           {showLogin && <LoginModal setShowLogin={setShowLogin} setIsSignedIn={setIsSignedIn} />}
         </AppContainer>

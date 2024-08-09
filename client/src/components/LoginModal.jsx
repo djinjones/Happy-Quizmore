@@ -73,21 +73,22 @@ const LoginModal = ({ setShowLogin, setIsSignedIn }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
- 
+  const [ login, { err } ] = useMutation(LOGIN);
  
  
   const handleLogin = async (e) => {
-    const [ login, { err } ] = useMutation(LOGIN)
+    
 
     e.preventDefault();
     try {
       const mutationResponse = await login({
         variables: {username: username, password: password}
       });
+      console.log('mutation response from login: ', mutationResponse)
       const token = mutationResponse.data.login.token;
       console.log('attempting login...')
-      Auth.login(token)
-      setIsSignedIn(true);
+      Auth.login(token);
+      setShowLogin(false);
 
     } catch (error) {
       console.error("error: ", error)
