@@ -1,6 +1,7 @@
 
 import styled from 'styled-components';
 import backgroundImage from '../assets/images/billy-madison.jpg';
+import Auth from '../utils/auth'
 
 const Nav = styled.nav`
    display: flex;
@@ -37,12 +38,16 @@ const Navbar = ({ setShowSignup, setShowLogin, isSignedIn, setIsSignedIn }) => {
     <Nav>
       <div>Happy Quizzmore</div>
       <NavLinks>
-        {!isSignedIn && <NavLink onClick={() => setShowSignup(true)}>Signup</NavLink>}
-        {!isSignedIn && <NavLink onClick={() => setShowLogin(true)}>Login</NavLink>}
-        {isSignedIn && <NavLink onClick={() => setIsSignedIn(false)}>Logout</NavLink>}
+        {Auth.loggedIn() 
+          ? <NavLink onClick={Auth.logout()}>Logout</NavLink> 
+          : <NavLink onClick={() => setShowSignup(true)}>Signup</NavLink>}
+          {Auth.loggedIn() ? <></> : <NavLink onClick={() => setShowLogin(true)}>Login</NavLink>}
       </NavLinks>
     </Nav>
   );
 };
 
 export default Navbar;
+
+
+/**/
