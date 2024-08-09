@@ -1,6 +1,6 @@
 
 import  { useState } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled from 'styled-components';
 import Navbar from './components/Navbar';
 import Quiz from './components/Quiz';
 import SignupModal from './components/SignupModal';
@@ -41,14 +41,14 @@ const client = new ApolloClient({
 
 */
 
-const GlobalStyle = createGlobalStyle`
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #ababab;
-  }
-`;
+// const GlobalStyle = createGlobalStyle`
+//   body {
+//     font-family: Arial, sans-serif;
+//     margin: 0;
+//     padding: 0;
+//     background-color: #ababab;
+//   }
+// `;
 
 const AppContainer = styled.div`
   text-align: center;
@@ -99,7 +99,7 @@ function App() {
   return (
 
       <AppContainer>
-        <GlobalStyle />
+        {/* <GlobalStyle /> */}
         <Navbar
           setShowSignup={setShowSignup}
           setShowLogin={setShowLogin}
