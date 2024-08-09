@@ -59,7 +59,7 @@ const Quiz = () => {
   const [submitted, setSubmitted] = useState(false);
   const [result, setResult] = useState(null);
 
-
+// needs to use the queries and mutations instead of fetching
   useEffect(() => {
     fetch('http://localhost:5000/api/questions')
       .then(response => response.json())
