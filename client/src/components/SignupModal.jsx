@@ -97,7 +97,7 @@ const SignupModal = ({ setShowSignup }) => {
       console.log("mutation response: ", mutationResponse)
       
       if (!mutationResponse.data || !mutationResponse.data.addUser || !mutationResponse.data.addUser.token) {
-        console.log(mutationResponse.data, mutationResponse.data.addUser, mutationResponse.data.addUser.token)
+        console.log('data: ', mutationResponse.data, 'addUser: ', mutationResponse.data.addUser, )
         console.error("something is wrong with token recieved from database server!");
         return;
       }
