@@ -2,9 +2,11 @@
 import  { useEffect, useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Quiz from './components/Quiz';
 import SignupModal from './components/SignupModal';
 import LoginModal from './components/LoginModal';
+import GlobalStyle from './styles/GlobalStyle';
 import Auth from './utils/auth'
 
 
@@ -43,37 +45,41 @@ const client = new ApolloClient({
 console.log(client.link)
 
 
-
-
-// const GlobalStyle = createGlobalStyle`
-//   body {
-//     font-family: Arial, sans-serif;
-//     margin: 0;
-//     padding: 0;
-//     background-color: #ababab;
-//   }
-// `;
-
 const AppContainer = styled.div`
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the footer sticks to the bottom */
+`;
+
+const ContentWrapper = styled.div`
+  flex: 1; /* Take up the remaining space between navbar and footer */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
 `;
 
 const AppTitle = styled.h1`
-  color: ${(props) => props.theme.text}; /* Apply theme text color */
+  color: ${(props) => props.theme.text}; 
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  text-align: center;
 `;
-
 
 const StartQuizButton = styled.button`
   background-color: ${(props) => props.theme.buttonBackground};
   color: ${(props) => props.theme.buttonText};
-  padding: 10px 20px;
+  padding: 15px 30px;
   border: none;
-  border-radius: 4px;
+  border-radius: 50px; /* Rounded button for a modern look */
   cursor: pointer;
-  font-size: 1em;
+  font-size: 1.25rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
   &:hover {
     background-color: ${(props) => props.theme.buttonHover};
+    transform: scale(1.05); /* Slight zoom on hover for interactivity */
   }
 `;
 
@@ -123,7 +129,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
-        {/* <GlobalStyle /> */}
+        <GlobalStyle />
         <AppContainer>
           <Navbar
             setShowSignup={setShowSignup}
@@ -134,12 +140,15 @@ function App() {
             toggleTheme={toggleTheme} 
             theme={theme} 
           />
+          <ContentWrapper>
           <div>logged in: { Auth.loggedIn() }</div>
         {Auth.loggedIn() ? <AppTitle>Welcome, Happy Quizmore time!</AppTitle> : <AppTitle>Happy Quizzmore</AppTitle>}
         {startQuiz ? <></> : <StartQuizButton onClick={handleStartQuiz}>Start Quiz</StartQuizButton>}
         {startQuiz && <Quiz />}
           {showSignup && <SignupModal setShowSignup={setShowSignup} />}
           {showLogin && <LoginModal setShowLogin={setShowLogin} setIsSignedIn={setIsSignedIn} />}
+          </ContentWrapper>
+          <Footer /> 
         </AppContainer>
       </ThemeProvider>
     </ApolloProvider>

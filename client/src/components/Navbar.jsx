@@ -27,21 +27,22 @@ const NavLinks = styled.div`
 const NavLink = styled.button`
   background: none;
   border: none;
-  color: ${(props) => props.theme.text};
+  color: ${(props) => props.theme.text}; /* Use theme's text color */
   cursor: pointer;
   font-size: 1em;
-  font-weight: bold;
+  font-weight: bold; /* Make the text bold for better visibility */
   transition: color 0.3s ease;
 
   &:hover {
     text-decoration: underline;
-    color: ${(props) => props.theme.buttonHover};
+    color: ${(props) => props.theme.buttonHover}; /* Change color on hover */
   }
 
   &:focus {
-    outline: 2px solid ${(props) => props.theme.buttonBackground};
+    outline: 2px solid ${(props) => props.theme.buttonBackground}; /* Improve focus visibility */
   }
 `;
+
 
 const ThemeToggleButton = styled.button`
   background: none;
