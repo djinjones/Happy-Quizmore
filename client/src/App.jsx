@@ -1,10 +1,11 @@
 
 import  { useState } from 'react';
-import styled from 'styled-components';
+import styled, { ThemeProvider} from 'styled-components';
 import Navbar from './components/Navbar';
 import Quiz from './components/Quiz';
 import SignupModal from './components/SignupModal';
 import LoginModal from './components/LoginModal';
+
 
 
 // uncomment this code if we decide we need to switch to global store for global state
@@ -19,6 +20,7 @@ import {
 } from '@apollo/client';
 
 import { setContext } from '@apollo/client/link/context';
+import { lightTheme, darkTheme } from './styles/theme'; // 
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -56,21 +58,23 @@ const AppContainer = styled.div`
 `;
 
 const AppTitle = styled.h1`
-  color: #333;
+  color: ${(props) => props.theme.text}; /* Apply theme text color */
 `;
 
+
 const StartQuizButton = styled.button`
-  background-color: #4CAF50;
-  color: white;
+  background-color: ${(props) => props.theme.buttonBackground};
+  color: ${(props) => props.theme.buttonText};
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 1em;
   &:hover {
-    background-color: #45a049;
+    background-color: ${(props) => props.theme.buttonHover};
   }
 `;
+
 
 /* code for homepage to use with <Link to='/home'/>
 const Home = () => (
@@ -87,6 +91,13 @@ function App() {
   const [showSignup, setShowSignup] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [startQuiz, setStartQuiz] = useState(false);
+  const [theme, setTheme] = useState('light');
+  const [rotationAngle, setRotationAngle] = useState(0);
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    setRotationAngle((prevAngle) => prevAngle + 360); // Increment rotation by 360 degrees
+  };
 
   const handleStartQuiz = () => {
     if (isSignedIn) {
@@ -98,20 +109,25 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-      <AppContainer>
+      <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
         {/* <GlobalStyle /> */}
-        <Navbar
-          setShowSignup={setShowSignup}
-          setShowLogin={setShowLogin}
-          setIsSignedIn={setIsSignedIn}
-          isSignedIn={isSignedIn}
-        />
-        <AppTitle>Happy Quizzmore</AppTitle>
-        <StartQuizButton onClick={handleStartQuiz}>Start Quiz</StartQuizButton>
-        {startQuiz && <Quiz />}
-        {showSignup && <SignupModal setShowSignup={setShowSignup} />}
-        {showLogin && <LoginModal setShowLogin={setShowLogin} setIsSignedIn={setIsSignedIn} />}
-      </AppContainer>
+        <AppContainer>
+          <Navbar
+            setShowSignup={setShowSignup}
+            setShowLogin={setShowLogin}
+            setIsSignedIn={setIsSignedIn}
+            isSignedIn={isSignedIn}
+            rotationAngle={rotationAngle}
+            toggleTheme={toggleTheme} 
+            theme={theme} 
+          />
+          <AppTitle>Happy Quizzmore</AppTitle>
+          <StartQuizButton onClick={handleStartQuiz}>Start Quiz</StartQuizButton>
+          {startQuiz && <Quiz />}
+          {showSignup && <SignupModal setShowSignup={setShowSignup} />}
+          {showLogin && <LoginModal setShowLogin={setShowLogin} setIsSignedIn={setIsSignedIn} />}
+        </AppContainer>
+      </ThemeProvider>
     </ApolloProvider>
 );
 

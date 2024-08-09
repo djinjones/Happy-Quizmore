@@ -1,45 +1,75 @@
-
 import styled from 'styled-components';
-import backgroundImage from '../assets/images/billy-madison.jpg';
+import { FaSun, FaMoon } from 'react-icons/fa';
 
 const Nav = styled.nav`
-   display: flex;
+  display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: white;
-  background-image: url(${backgroundImage});
-  background-position: center top;
-  background-size: contain; /* Adjust this value if needed */
-  height: 300px; /* Adjust the height as needed to fit the head */
+  background-image: ${(props) => props.theme.navbarBackgroundImage};
+  background-position: center; /* Center the image within the navbar */
+  background-size: cover; /* Ensure the image covers the entire navbar */
   background-repeat: no-repeat; /* Prevent the image from repeating */
+  height: 200px; /* Adjust the height as needed for your design */
+  color: ${(props) => props.theme.text};
+  transition: all 0.5s ease-in-out;
+
+  /* Apply accumulated rotation based on the rotationAngle prop */
+  transform: rotate(${(props) => props.rotationAngle}deg);
 `;
 
 const NavLinks = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const NavLink = styled.button`
   background: none;
   border: none;
-  color: black;
+  color: ${(props) => props.theme.text};
   cursor: pointer;
   font-size: 1em;
+  font-weight: bold;
+  transition: color 0.3s ease;
 
   &:hover {
     text-decoration: underline;
+    color: ${(props) => props.theme.buttonHover};
+  }
+
+  &:focus {
+    outline: 2px solid ${(props) => props.theme.buttonBackground};
   }
 `;
 
-const Navbar = ({ setShowSignup, setShowLogin, isSignedIn, setIsSignedIn }) => {
+const ThemeToggleButton = styled.button`
+  background: none;
+  border: none;
+  color: ${(props) => props.theme.text};
+  cursor: pointer;
+  font-size: 1.5em;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: ${(props) => props.theme.buttonHover};
+  }
+
+  &:focus {
+    outline: 2px solid ${(props) => props.theme.buttonBackground};
+  }
+`;
+
+const Navbar = ({ setShowSignup, setShowLogin, isSignedIn, setIsSignedIn, rotationAngle, toggleTheme, theme }) => {
   return (
-    <Nav>
+    <Nav rotationAngle={rotationAngle}>
       <div>Happy Quizzmore</div>
       <NavLinks>
         {!isSignedIn && <NavLink onClick={() => setShowSignup(true)}>Signup</NavLink>}
         {!isSignedIn && <NavLink onClick={() => setShowLogin(true)}>Login</NavLink>}
         {isSignedIn && <NavLink onClick={() => setIsSignedIn(false)}>Logout</NavLink>}
+        <ThemeToggleButton onClick={toggleTheme}>
+          {theme === 'light' ? <FaSun /> : <FaMoon />}
+        </ThemeToggleButton>
       </NavLinks>
     </Nav>
   );
