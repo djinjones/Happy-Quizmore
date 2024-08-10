@@ -86,7 +86,7 @@ const LoginModal = ({ setShowLogin, setIsSignedIn }) => {
       });
       console.log('mutation response from login: ', mutationResponse)
       const token = mutationResponse.data.login.token;
-      console.log('attempting login...')
+      console.log('attempting login... loginmodal:89', token)
       Auth.login(token);
       setShowLogin(false);
 
