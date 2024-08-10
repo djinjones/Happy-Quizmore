@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useMutation, useQuery } from '@apollo/client';
@@ -13,14 +14,15 @@ const ModalBackground = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.modalBackground};
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 const ModalContainer = styled.div`
-  background: white;
+  background: ${(props) => props.theme.cardBackground}; /* Card background based on theme */
+  color: ${(props) => props.theme.text}; /* Text color based on theme */
   padding: 20px;
   border-radius: 4px;
   max-width: 400px;
@@ -36,6 +38,7 @@ const CloseButton = styled.button`
   position: absolute;
   top: 10px;
   right: 10px;
+  color: ${(props) => props.theme.text};
 `;
 
 const Form = styled.form`
@@ -47,20 +50,22 @@ const Form = styled.form`
 const Input = styled.input`
   padding: 10px;
   font-size: 1em;
-  border: 1px solid #ddd;
+  border: 1px solid ${(props) => props.theme.borderColor};
   border-radius: 4px;
+  background-color: ${(props) => props.theme.cardBackground};
+  color: ${(props) => props.theme.text};
 `;
 
 const SubmitButton = styled.button`
-  background-color: #4CAF50;
-  color: white;
+  background-color: ${(props) => props.theme.buttonBackground};
+  color: ${(props) => props.theme.buttonText};
   padding: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 1em;
   &:hover {
-    background-color: #45a049;
+    background-color: ${(props) => props.theme.buttonHover};
   }
 `;
 
