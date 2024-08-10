@@ -23,9 +23,12 @@ class AuthService {
   }
 
   getToken() {
+    const token = localStorage.getItem('id_token');
     // Retrieves the user token from localStorage
-    console.log('token: ', localStorage.getItem('id_token'))
-    return localStorage.getItem('id_token');
+    console.log('token: ', token);
+
+    return token;
+    //return localStorage.getItem('id_token');
     
   }
 
@@ -35,7 +38,7 @@ class AuthService {
 
     localStorage.setItem('id_token', idToken);
 
-    //window.location.assign('/');
+    window.location.assign('/');
   }
 
   logout() {
