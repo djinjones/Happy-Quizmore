@@ -1,11 +1,14 @@
 
 import  { useEffect, useState } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Quiz from './components/Quiz';
 import SignupModal from './components/SignupModal';
 import LoginModal from './components/LoginModal';
+import GlobalStyle from './styles/GlobalStyle';
 import Auth from './utils/auth'
+
 
 // uncomment this code if we decide we need to switch to global store for global state
 // import { StoreProvider } from './utils/globalState';
@@ -19,6 +22,7 @@ import {
 } from '@apollo/client';
 
 import { setContext } from '@apollo/client/link/context';
+import { lightTheme, darkTheme } from './styles/theme'; // 
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -41,38 +45,44 @@ const client = new ApolloClient({
 console.log(client.link)
 
 
-
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #ababab;
-  }
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the footer sticks to the bottom */
 `;
 
-const AppContainer = styled.div`
-  text-align: center;
+const ContentWrapper = styled.div`
+  flex: 1; /* Take up the remaining space between navbar and footer */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
 `;
 
 const AppTitle = styled.h1`
-  color: #333;
+  color: ${(props) => props.theme.text}; 
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  text-align: center;
 `;
 
 const StartQuizButton = styled.button`
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
+  background-color: ${(props) => props.theme.buttonBackground};
+  color: ${(props) => props.theme.buttonText};
+  padding: 15px 30px;
   border: none;
-  border-radius: 4px;
+  border-radius: 50px; /* Rounded button for a modern look */
   cursor: pointer;
-  font-size: 1em;
+  font-size: 1.25rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
   &:hover {
-    background-color: #45a049;
+    background-color: ${(props) => props.theme.buttonHover};
+    transform: scale(1.05); /* Slight zoom on hover for interactivity */
   }
 `;
+
 
 /* code for homepage to use with <Link to='/home'/>
 const Home = () => (
@@ -89,6 +99,21 @@ function App() {
   const [showSignup, setShowSignup] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [startQuiz, setStartQuiz] = useState(false);
+  const [theme, setTheme] = useState('light');
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme); // Save theme to localStorage
+   // Increment rotation by 360 degrees
+  };
 
   const handleStartQuiz = () => {
     if (Auth.loggedIn()) {
@@ -111,22 +136,28 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-      <AppContainer>
+      <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
         <GlobalStyle />
-        <Navbar
-          setShowSignup={setShowSignup}
-          setShowLogin={setShowLogin}
-          setIsSignedIn={setIsSignedIn}
-          isSignedIn={isSignedIn}
-        />
-        <div>logged in: { Auth.loggedIn() }</div>
+        <AppContainer>
+          <Navbar
+            setShowSignup={setShowSignup}
+            setShowLogin={setShowLogin}
+            setIsSignedIn={setIsSignedIn}
+            isSignedIn={isSignedIn}
+            toggleTheme={toggleTheme} 
+            theme={theme} 
+          />
+          <ContentWrapper>
+          <div>logged in: { Auth.loggedIn() }</div>
         {Auth.loggedIn() ? <AppTitle>Welcome, Happy Quizmore time!</AppTitle> : <AppTitle>Happy Quizzmore</AppTitle>}
         {startQuiz ? <></> : <StartQuizButton onClick={handleStartQuiz}>Start Quiz</StartQuizButton>}
         {startQuiz && <Quiz />}
-        
-        {showSignup && <SignupModal setShowSignup={setShowSignup} />}
-        {showLogin && <LoginModal setShowLogin={setShowLogin} setIsSignedIn={setIsSignedIn} />}
-      </AppContainer>
+          {showSignup && <SignupModal setShowSignup={setShowSignup} />}
+          {showLogin && <LoginModal setShowLogin={setShowLogin} setIsSignedIn={setIsSignedIn} />}
+          </ContentWrapper>
+          <Footer /> 
+        </AppContainer>
+      </ThemeProvider>
     </ApolloProvider>
 );
 
