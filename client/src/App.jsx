@@ -100,11 +100,19 @@ function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [startQuiz, setStartQuiz] = useState(false);
   const [theme, setTheme] = useState('light');
-  const [rotationAngle, setRotationAngle] = useState(0);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+  }, []);
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
-    setRotationAngle((prevAngle) => prevAngle + 360); // Increment rotation by 360 degrees
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme); // Save theme to localStorage
+   // Increment rotation by 360 degrees
   };
 
   const handleStartQuiz = () => {
@@ -136,7 +144,6 @@ function App() {
             setShowLogin={setShowLogin}
             setIsSignedIn={setIsSignedIn}
             isSignedIn={isSignedIn}
-            rotationAngle={rotationAngle}
             toggleTheme={toggleTheme} 
             theme={theme} 
           />
