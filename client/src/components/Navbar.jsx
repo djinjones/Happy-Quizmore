@@ -79,7 +79,7 @@ const Navbar = ({ setShowSignup, setShowLogin, isSignedIn, setIsSignedIn, toggle
       <NavLinks>
         {isSignedIn && <NavLink onClick={() => setIsSignedIn(false)}>Logout</NavLink>}
         {Auth.loggedIn() 
-          ? <NavLink onClick={Auth.logout()}>Logout</NavLink> 
+          ? <NavLink onClick={() => Auth.logout()}>Logout</NavLink> 
           : <NavLink onClick={() => setShowSignup(true)}>Signup</NavLink>}
           {Auth.loggedIn() ? null : <NavLink onClick={() => setShowLogin(true)}>Login</NavLink>}
           <ThemeToggleButton onClick={toggleTheme}>
