@@ -13,14 +13,14 @@ const typeDefs = `
 
   type Question {
     _id: ID
-    title: String
-    url: String
+    title: String!
+    url: String!
   }
   
   type Query {
-  users: [User]
-  questions: [Question]
-  }
+    users: [User]
+    questions: [Question]
+    }
 
   type Mutation {
     addUser(username: String!, password: String!): Auth

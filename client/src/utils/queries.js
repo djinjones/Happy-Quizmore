@@ -6,17 +6,13 @@ query Users {
     username
   }
 }
-`
+`;
 
 export const GET_QUESTIONS = gql`
-    {
-        questions {
-        _id
-        title
-        images {
-          url
-          title
-          }
-        }
-    }
-` 
+query Query {
+  questions {
+    title
+    url
+  }
+}
+` ;

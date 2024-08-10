@@ -1,15 +1,17 @@
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
-const bcrypt = require('bcrypt');
+
 
 const questionSchema = new Schema({
     title: {
         type: String,
+        required: true,
     },
     url: {
         type: String,
-    }
+        required: true,
+    },
 });
 
 

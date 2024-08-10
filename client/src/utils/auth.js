@@ -26,7 +26,6 @@ class AuthService {
   getToken() {
     const token = localStorage.getItem('id_token');
     // Retrieves the user token from localStorage
-    console.log('token: ', token);
 
     return token;
     //return localStorage.getItem('id_token');
@@ -46,7 +45,7 @@ class AuthService {
     // Clear user token and profile data from localStorage
     localStorage.removeItem('id_token');
     // this will reload the page and reset the state of the application
-    //window.location.assign('/');
+    window.location.assign('/');
   }
 }
 

@@ -1,6 +1,8 @@
 
-import  { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useQuery } from '@apollo/client';
+import { GET_QUESTIONS } from '../utils/queries';
 
 const QuizContainer = styled.div`
   max-width: 600px;
@@ -53,18 +55,17 @@ const SubmitButton = styled.button`
 
 
 
-const Quiz = () => {
+const Quiz = (props) => {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [result, setResult] = useState(null);
 
-// needs to use the queries and mutations instead of fetching
-  useEffect(() => {
-    fetch('http://localhost:5000/api/questions')
-      .then(response => response.json())
-      .then(data => setQuestions(data));
-  }, []);
+  //const {data, loading, error} = useQuery(GET_QUESTIONS);
+  console.log(props)
+  // console.log(data)
+  // setQuestions(data.questions);
+  console.log('current questions state: ', questions)
 
   const handleChange = (questionId, answer) => {
     setAnswers({
@@ -74,46 +75,45 @@ const Quiz = () => {
   };
 
   const handleSubmit = () => {
-    fetch('http://localhost:5000/api/submit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(answers),
-    })
-    .then(response => response.json())
-    .then(data => {
-      setResult(data.result);
-      setSubmitted(true);
-    });
+    
   };
 
-  if (submitted) {
-    return <div>Your result is: {result}</div>;
-  }
+  if (submitted) return <div>Your result is: {result}</div>;
+  
+
+  if (loading) return <p>Loading...</p>
 
   return (
-    <QuizContainer>
-      {questions.map((question) => (
-        <QuestionContainer key={question._id}>
-          <Image src={question.image} alt="movie scene" />
-          <QuestionTitle>Which movie is this?</QuestionTitle>
-          {question.options.map((option) => (
-            <OptionLabel key={option}>
-              <input
-                type="radio"
-                name={question._id}
-                value={option}
-                onChange={() => handleChange(question._id, option)}
-              />
-              {option}
-            </OptionLabel>
-          ))}
-        </QuestionContainer>
-      ))}
+<QuizContainer>
+      {questions && questions.length > 0 ? (
+        questions.map((question) => (
+          <QuestionContainer key={question._id}>
+            <Image src={question.url} alt="movie scene" />
+            <QuestionTitle>Which movie is this?</QuestionTitle>
+            
+          </QuestionContainer>
+        ))
+      ) : (
+        <p>No questions available</p>
+      )}
       <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
     </QuizContainer>
   );
 };
 
 export default Quiz;
+
+
+/* removed from inside the questionContainer
+{question.options.map((option) => (
+              <OptionLabel key={option}>
+                <input
+                  type="radio"
+                  name={question._id}
+                  value={option}
+                  onChange={() => handleChange(question._id, option)}
+                />
+                {option}
+              </OptionLabel>
+            ))}
+*/

@@ -8,11 +8,8 @@ import SignupModal from './components/SignupModal';
 import LoginModal from './components/LoginModal';
 import GlobalStyle from './styles/GlobalStyle';
 import Auth from './utils/auth'
-
-
-// uncomment this code if we decide we need to switch to global store for global state
-// import { StoreProvider } from './utils/globalState';
-// import { Outlet } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import { GET_QUESTIONS } from './utils/queries';
 
 import {
   ApolloClient,
@@ -27,7 +24,7 @@ import { lightTheme, darkTheme } from './styles/theme'; //
 const httpLink = createHttpLink({
   uri: '/graphql',
 });
-console.log("26", httpLink)
+
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token');
   return {
@@ -42,7 +39,7 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
-console.log(client.link)
+
 
 
 const AppContainer = styled.div`
@@ -84,28 +81,23 @@ const StartQuizButton = styled.button`
 `;
 
 
-/* code for homepage to use with <Link to='/home'/>
-const Home = () => (
-  <AppContainer>
-    <AppTitle>Happy Quizzmore</AppTitle>
-    <StartQuizButton onClick={() => {}}>Start Quiz</StartQuizButton>
-    <Outlet />
-  </AppContainer>
-);
-*/
-
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [startQuiz, setStartQuiz] = useState(false);
   const [theme, setTheme] = useState('light');
-
+  //const {data, loading, er} = useQuery(GET_QUESTIONS);
+  
+  
   useEffect(() => {
+
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       setTheme(savedTheme);
     }
+
+    
   }, []);
 
   const toggleTheme = () => {
@@ -117,22 +109,12 @@ function App() {
 
   const handleStartQuiz = () => {
     if (Auth.loggedIn()) {
-      alert('starting quiz...')
       setStartQuiz(true);
     } else {
       setShowLogin(true);
     }
   };
 
-  useEffect(() => {
-    // This will run when the component mounts
-    console.log(Auth.loggedIn());
-
-    // Optionally, return a cleanup function
-    return () => {
-      console.log('return!');
-    };
-  }, []);
 
   return (
     <ApolloProvider client={client}>
@@ -148,10 +130,9 @@ function App() {
             theme={theme} 
           />
           <ContentWrapper>
-          <div>logged in: { Auth.loggedIn() }</div>
-        {Auth.loggedIn() ? <AppTitle>Welcome, Happy Quizmore time!</AppTitle> : <AppTitle>Happy Quizzmore</AppTitle>}
-        {startQuiz ? <></> : <StartQuizButton onClick={handleStartQuiz}>Start Quiz</StartQuizButton>}
-        {startQuiz && <Quiz />}
+          {Auth.loggedIn() ? <AppTitle>Welcome, Happy Quizmore time!</AppTitle> : <AppTitle>Happy Quizzmore</AppTitle>}
+          {startQuiz ? <></> : <StartQuizButton onClick={handleStartQuiz}>Start Quiz</StartQuizButton>}
+          {startQuiz && <Quiz questions={data ? data.questions : []} />}
           {showSignup && <SignupModal setShowSignup={setShowSignup} />}
           {showLogin && <LoginModal setShowLogin={setShowLogin} setIsSignedIn={setIsSignedIn} />}
           </ContentWrapper>
