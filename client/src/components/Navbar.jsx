@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styled from 'styled-components';
 import { FaSun, FaMoon } from 'react-icons/fa';
 import Auth from '../utils/auth';
