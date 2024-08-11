@@ -6,24 +6,43 @@ import { useApolloClient } from '@apollo/client';
 import { GET_QUESTIONS } from '../utils/queries';
 
 const QuizContainer = styled.div`
-  max-width: 600px;
+  display:flex;
+  max-width: 840px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #f9f9f9;
+  scroll-snap-type: x mandatory;
+ 
+  overflow-x: scroll;
 
   @media (max-width: 768px) {
     padding: 10px;
+    min-with: 430px;
   }
 
   @media (max-width: 480px) {
     padding: 5px;
+    min-width: 350px;
   }
 `;
 
 const QuestionContainer = styled.div`
-  margin-bottom: 20px;
+  min-height: 400px;
+  min-width: 800px;
+  padding: 20px;
+  scroll-snap-align: center;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    min-with: 430px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 5px;
+    min-width: 350px;
+  }
 `;
 
 const QuestionTitle = styled.h2`
@@ -89,8 +108,11 @@ const Quiz = (props) => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
     setSubmitted(true);
+    const answer = e.target.value;
+    const quesitonId = e.target.
+    console.log('you answered: ', answer);
   };
 
   if (submitted) return <div>Your result is: {result}</div>;
