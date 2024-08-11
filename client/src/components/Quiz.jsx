@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/client';
+import { useApolloClient } from '@apollo/client';
 import { GET_QUESTIONS } from '../utils/queries';
 
 const QuizContainer = styled.div`
@@ -52,20 +53,34 @@ const SubmitButton = styled.button`
   }
 `;
 
-
-
-
 const Quiz = (props) => {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  console.log('current questions state: ', questions);
+  
+  const client = useApolloClient();
 
-  //const {data, loading, error} = useQuery(GET_QUESTIONS);
-  console.log(props)
-  // console.log(data)
-  // setQuestions(data.questions);
-  console.log('current questions state: ', questions)
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const { data } = await client.query({
+          query: GET_QUESTIONS,
+        });
+        setQuestions(data.questions);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuestions();
+  }, [client]);
 
   const handleChange = (questionId, answer) => {
     setAnswers({
@@ -75,28 +90,28 @@ const Quiz = (props) => {
   };
 
   const handleSubmit = () => {
-    
+    setSubmitted(true);
   };
 
   if (submitted) return <div>Your result is: {result}</div>;
-  
-
+  if (error) return <p>Error loading questions</p>;
   if (loading) return <p>Loading...</p>
 
   return (
-<QuizContainer>
+    <QuizContainer>
       {questions && questions.length > 0 ? (
         questions.map((question) => (
           <QuestionContainer key={question._id}>
             <Image src={question.url} alt="movie scene" />
             <QuestionTitle>Which movie is this?</QuestionTitle>
-            
+            <input className='movie-answer-input' question-id-input={question._id} type='text' placeholder='movie title here' />
+            <SubmitButton className='movie-answer-submit' question-id-submit={question._id} onClick={handleSubmit}>Submit</SubmitButton>
           </QuestionContainer>
         ))
       ) : (
         <p>No questions available</p>
       )}
-      <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
+      
     </QuizContainer>
   );
 };

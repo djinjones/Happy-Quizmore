@@ -8,8 +8,6 @@ import SignupModal from './components/SignupModal';
 import LoginModal from './components/LoginModal';
 import GlobalStyle from './styles/GlobalStyle';
 import Auth from './utils/auth'
-import { useQuery } from '@apollo/client';
-import { GET_QUESTIONS } from './utils/queries';
 
 import {
   ApolloClient,
@@ -39,8 +37,6 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
-
-
 
 const AppContainer = styled.div`
   display: flex;
@@ -87,8 +83,6 @@ function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [startQuiz, setStartQuiz] = useState(false);
   const [theme, setTheme] = useState('light');
-  //const {data, loading, er} = useQuery(GET_QUESTIONS);
-  
   
   useEffect(() => {
 
@@ -103,8 +97,8 @@ function App() {
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
-    localStorage.setItem('theme', newTheme); // Save theme to localStorage
-   // Increment rotation by 360 degrees
+    localStorage.setItem('theme', newTheme);
+
   };
 
   const handleStartQuiz = () => {
@@ -132,7 +126,7 @@ function App() {
           <ContentWrapper>
           {Auth.loggedIn() ? <AppTitle>Welcome, Happy Quizmore time!</AppTitle> : <AppTitle>Happy Quizzmore</AppTitle>}
           {startQuiz ? <></> : <StartQuizButton onClick={handleStartQuiz}>Start Quiz</StartQuizButton>}
-          {startQuiz && <Quiz questions={data ? data.questions : []} />}
+          {startQuiz && <Quiz />}
           {showSignup && <SignupModal setShowSignup={setShowSignup} />}
           {showLogin && <LoginModal setShowLogin={setShowLogin} setIsSignedIn={setIsSignedIn} />}
           </ContentWrapper>
@@ -146,54 +140,3 @@ function App() {
 
 export default App;
 
-
-/* 
-<------------------------html in apollo provider wrapper using store and outlet----------------------->
-
-return (
- <ApolloProvider client={client}>
-  <Router>
-    <GlobalStyle />
-    <Navbar
-      setShowSignup={setShowSignup}
-      setShowLogin={setShowLogin}
-      setIsSignedIn={setIsSignedIn}
-      isSignedIn={isSignedIn}
-    />
-    <Routes>
-      <Route path="/" element={<Home />}>
-        <Route index element={<div>Welcome! Click start quiz to begin.</div>} />
-        <Route path="quiz" element={<Quiz />} />
-      </Route>
-    </Routes>
-    {showSignup && <SignupModal setShowSignup={setShowSignup} />}
-    {showLogin && <LoginModal setShowLogin={setShowLogin} setIsSignedIn={setIsSignedIn} />}
-  </Router>
-</ApolloProvider> 
-);
- } 
-
-<------------------------previous code----------------------->
-
-return (
-
-      <AppContainer>
-        <GlobalStyle />
-        <Navbar
-          setShowSignup={setShowSignup}
-          setShowLogin={setShowLogin}
-          setIsSignedIn={setIsSignedIn}
-          isSignedIn={isSignedIn}
-        />
-        <AppTitle>Happy Quizzmore</AppTitle>
-        <StartQuizButton onClick={handleStartQuiz}>Start Quiz</StartQuizButton>
-        {startQuiz && <Quiz />}
-        {showSignup && <SignupModal setShowSignup={setShowSignup} />}
-        {showLogin && <LoginModal setShowLogin={setShowLogin} setIsSignedIn={setIsSignedIn} />}
-      </AppContainer>
-
-  );
-
-
-
-*/

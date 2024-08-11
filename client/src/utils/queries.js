@@ -11,6 +11,7 @@ query Users {
 export const GET_QUESTIONS = gql`
 query Query {
   questions {
+    _id
     title
     url
   }
