@@ -3,8 +3,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useQuery, useMutation,  useApolloClient } from '@apollo/client';
 import { GET_QUESTIONS } from '../utils/queries';
-import { SUBMIT_ANSWERS } from '../utils/mutations';
-import Auth from '../utils/auth';
 
 
 
