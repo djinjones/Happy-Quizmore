@@ -6,7 +6,7 @@ query Users {
     username
   }
 }
-`
+`;
 
 export const GET_QUESTIONS = gql`
   query GetQuestions {
@@ -25,3 +25,11 @@ export const SUBMIT_ANSWERS = gql`
     }
   }
 `;
+// query Query {
+//   questions {
+//     _id
+//     title
+//     url
+//   }
+// }
+// ` ;
