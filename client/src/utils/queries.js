@@ -9,14 +9,19 @@ query Users {
 `
 
 export const GET_QUESTIONS = gql`
-    {
-        questions {
-        _id
-        title
-        images {
-          url
-          title
-          }
-        }
+  query GetQuestions {
+    questions {
+      _id
+      image
+      correctAnswer
     }
-` 
+  }
+`;
+
+export const SUBMIT_ANSWERS = gql`
+  mutation SubmitAnswers($answers: [AnswerInput!]!) {
+    submitAnswers(answers: $answers) {
+      result
+    }
+  }
+`;
