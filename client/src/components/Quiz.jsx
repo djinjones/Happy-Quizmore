@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useQuery, useMutation,  useApolloClient } from '@apollo/client';
 import { GET_QUESTIONS } from '../utils/queries';
