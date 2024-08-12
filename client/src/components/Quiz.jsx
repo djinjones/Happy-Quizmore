@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/client';
 import { useApolloClient } from '@apollo/client';
@@ -26,6 +26,30 @@ const QuizContainer = styled.div`
     padding: 5px;
     min-width: 350px;
   }
+`;
+
+const ScrollButton = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 10px;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+`;
+
+const LeftButton = styled(ScrollButton)`
+  left: -40px;
+`;
+
+const RightButton = styled(ScrollButton)`
+  right: -40px;
 `;
 
 const QuestionContainer = styled.div`
@@ -79,8 +103,9 @@ const Quiz = (props) => {
   const [result, setResult] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const quizContainerRef = useRef(null);
   
-  console.log('current questions state: ', questions);
+  // for debugging only: console.log('current questions state: ', questions);
   
   const client = useApolloClient();
 
@@ -91,6 +116,7 @@ const Quiz = (props) => {
           query: GET_QUESTIONS,
         });
         setQuestions(data.questions);
+        console.log(questions);
       } catch (err) {
         setError(err);
       } finally {
@@ -108,11 +134,31 @@ const Quiz = (props) => {
     });
   };
 
-  const handleSubmit = (e) => {
-    setSubmitted(true);
-    const answer = e.target.value;
-    const quesitonId = e.target.
-    console.log('you answered: ', answer);
+  const handleScrollLeft = () => {
+    if (quizContainerRef.current) {
+      quizContainerRef.current.scrollBy({ left: -800, behavior: 'smooth' });
+    }
+  };
+
+  const handleScrollRight = () => {
+    if (quizContainerRef.current) {
+      quizContainerRef.current.scrollBy({ left: 800, behavior: 'smooth' });
+    }
+  };
+
+  const handleSubmit = (questionId, i) => {
+    const userAnswer = answers[questionId];
+    const question = questions.find(q => q._id === questionId);
+    const index = i+1;
+    if (question && userAnswer && userAnswer.toLowerCase() === question.title.toLowerCase()) {
+      setResult(prevResult => prevResult + 1); // Increment score if correct
+      console.log('Correct! You answered: ', userAnswer, ' for question #', index);
+    } else {
+      console.log('Incorrect! You answered: ', userAnswer, ' for question #', index)
+    }
+  
+    
+    console.log('Submitted answer for question ID:', questionId, 'Answer:', userAnswer);
   };
 
   if (submitted) return <div>Your result is: {result}</div>;
@@ -120,28 +166,45 @@ const Quiz = (props) => {
   if (loading) return <p>Loading...</p>
 
   return (
-    <QuizContainer>
-      {questions && questions.length > 0 ? (
-        questions.map((question) => (
-          <QuestionContainer key={question._id}>
-            <Image src={question.url} alt="movie scene" />
-            <QuestionTitle>Which movie is this?</QuestionTitle>
-            <input className='movie-answer-input' question-id-input={question._id} type='text' placeholder='movie title here' />
-            <SubmitButton className='movie-answer-submit' question-id-submit={question._id} onClick={handleSubmit}>Submit</SubmitButton>
-          </QuestionContainer>
-        ))
-      ) : (
-        <p>No questions available</p>
-      )}
-      
-    </QuizContainer>
+    <div style={{ position: 'relative' }}>
+      <LeftButton onClick={handleScrollLeft}>{'<'}</LeftButton>
+      <QuizContainer ref={quizContainerRef}>
+        {questions.length > 0 ? (
+          questions.map((question, index) => (
+            <QuestionContainer key={index}>
+              <Image src={question.url} alt="movie scene" />
+              <QuestionTitle>Which movie is this?</QuestionTitle>
+              <input 
+                className='movie-answer-input' 
+                data-question-input={question._id} 
+                type='text' 
+                placeholder='movie title here' 
+                onChange={(e) => setAnswers({ ...answers, [question._id]: e.target.value })}
+              />
+              <SubmitButton 
+                className='movie-answer-submit' 
+                data-question-submit={question._id} 
+                onClick={() => handleSubmit(question._id, index)}>
+                  Submit
+              </SubmitButton>
+            </QuestionContainer>
+          ))
+        ) : (
+          <p>No questions available</p>
+        )}
+      </QuizContainer>
+      <RightButton onClick={handleScrollRight}>{'>'}</RightButton>
+    </div>
   );
 };
 
 export default Quiz;
 
 
-/* removed from inside the questionContainer
+/* 
+<p>{index}</p>
+ data-number={index}
+removed from inside the questionContainer
 {question.options.map((option) => (
               <OptionLabel key={option}>
                 <input
