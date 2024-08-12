@@ -57,6 +57,14 @@ const QuestionContainer = styled.div`
   min-width: 800px;
   padding: 20px;
   scroll-snap-align: center;
+  background-color: ${({ iscorrect }) => 
+    iscorrect === null 
+      ? 'transparent' 
+      : iscorrect 
+      ? 'rgba(0, 255, 0, 0.3)' 
+      : 'rgba(255, 0, 0, 0.3)'
+  };
+  transition: background-color 0.3s ease-in-out;
 
   @media (max-width: 768px) {
     padding: 10px;
@@ -103,11 +111,13 @@ const Quiz = (props) => {
   const [result, setResult] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const quizContainerRef = useRef(null);
+  const [answerStatus, setAnswerStatus] = useState({});
+  
   
   // for debugging only: console.log('current questions state: ', questions);
   
   const client = useApolloClient();
+  const quizContainerRef = useRef(null);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -116,6 +126,14 @@ const Quiz = (props) => {
           query: GET_QUESTIONS,
         });
         setQuestions(data.questions);
+       
+        setAnswerStatus(
+          data.questions.reduce((acc, question) => {
+            acc[question._id] = null; // Initialize each question's status as null
+            return acc;
+          }, {})
+        );
+
         console.log(questions);
       } catch (err) {
         setError(err);
@@ -150,13 +168,19 @@ const Quiz = (props) => {
     const userAnswer = answers[questionId];
     const question = questions.find(q => q._id === questionId);
     const index = i+1;
-    if (question && userAnswer && userAnswer.toLowerCase() === question.title.toLowerCase()) {
+    const iscorrect = question && userAnswer && userAnswer.toLowerCase() === question.title.toLowerCase();
+    
+    if (iscorrect) {
       setResult(prevResult => prevResult + 1); // Increment score if correct
       console.log('Correct! You answered: ', userAnswer, ' for question #', index);
     } else {
       console.log('Incorrect! You answered: ', userAnswer, ' for question #', index)
     }
   
+    setAnswerStatus(prevStatus => ({
+      ...prevStatus,
+      [question._id]: iscorrect !== undefined ? iscorrect : null // Update to true/false, keep null if not answered
+    }));
     
     console.log('Submitted answer for question ID:', questionId, 'Answer:', userAnswer);
   };
@@ -171,7 +195,7 @@ const Quiz = (props) => {
       <QuizContainer ref={quizContainerRef}>
         {questions.length > 0 ? (
           questions.map((question, index) => (
-            <QuestionContainer key={index}>
+            <QuestionContainer key={index} iscorrect={answerStatus[question._id]}>
               <Image src={question.url} alt="movie scene" />
               <QuestionTitle>Which movie is this?</QuestionTitle>
               <input 
