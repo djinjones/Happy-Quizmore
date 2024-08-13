@@ -7,7 +7,7 @@ import Quiz from './components/Quiz';
 import SignupModal from './components/SignupModal';
 import LoginModal from './components/LoginModal';
 import GlobalStyle from './styles/GlobalStyle';
-import Auth from './utils/auth'
+import Auth from './utils/auth';
 
 import {
   ApolloClient,
@@ -17,10 +17,19 @@ import {
 } from '@apollo/client';
 
 import { setContext } from '@apollo/client/link/context';
-import { lightTheme, darkTheme } from './styles/theme'; // 
+import { lightTheme, darkTheme } from './styles/theme'; //  
+
+const graphqlEndpoint = process.env.REACT_APP_GRAPHQL_ENDPOINT;
+
+if (!graphqlEndpoint) {
+  console.error('GraphQL endpoint is not defined');
+} else {
+  console.log('Using GraphQL endpoint:', graphqlEndpoint);
+}
 
 const httpLink = createHttpLink({
-  uri: '/graphql',
+  uri: graphqlEndpoint || 'http://localhost:3001/graphql',
+  cache: new InMemoryCache(),
 });
 
 const authLink = setContext((_, { headers }) => {
