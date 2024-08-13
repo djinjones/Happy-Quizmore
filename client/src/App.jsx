@@ -19,7 +19,8 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import { lightTheme, darkTheme } from './styles/theme'; //  
 
-const graphqlEndpoint = `mongodb+srv://djinjones:s2y6yLS2kX4DOisg@djincluster.bmwpe.mongodb.net/?retryWrites=true&w=majority&appName=DjinCluster`
+const graphqlEndpoint = process.env.REACT_APP_GRAPHQL_ENDPOINT;
+console.log(process.env.REACT_APP_GRAPHQL_ENDPOINT);
 
 if (!graphqlEndpoint) {
   console.error('GraphQL endpoint is not defined');

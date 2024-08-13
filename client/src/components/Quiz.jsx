@@ -45,7 +45,8 @@ const QuizContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 840px;
+  width: 840px;
+  height: 900px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid ${(props) => props.theme.borderColor};
@@ -79,8 +80,8 @@ const ScoreText = styled.div`
 `;
 
 const FeedbackImage = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   position: absolute;
   top: -100px;
   left: 50%;
