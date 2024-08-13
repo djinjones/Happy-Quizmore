@@ -18,6 +18,9 @@
         "concurrently": "^5.1.0"
     },
     "dependencies": {
+        "fireworks-js": "^2.10.8",
+        "react-confetti": "^6.1.0",
+        "react-fireworks": "^1.0.4",
         "react-icons": "^5.2.1"
     }
 }

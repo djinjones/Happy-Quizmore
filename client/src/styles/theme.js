@@ -13,6 +13,7 @@ export const lightTheme = {
   modalBackground: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background for modals
   navbarBackgroundImage: `url(${lightImage})`, // Background image for navbar in light theme
   iconColor: '#FFD700', // Gold color for the sun icon (angel theme)
+  scoreboardBackground: '#ffeb3b'
 };
 
 export const darkTheme = {
@@ -27,4 +28,5 @@ export const darkTheme = {
   modalBackground: 'rgba(255, 255, 255, 0.1)', // Slightly visible white overlay for modals
   navbarBackgroundImage: `url(${darkImage})`, // Background image for navbar in dark theme
   iconColor: '#FF4500', // Bright orange-red for the moon icon (devil theme)
+  scoreboardBackground: '#607d8b'
 };

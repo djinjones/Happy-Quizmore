@@ -133,7 +133,7 @@ function App() {
             theme={theme} 
           />
           <ContentWrapper>
-          {Auth.loggedIn() ? <AppTitle>Welcome, Happy Quizmore time!</AppTitle> : <AppTitle>Happy Quizzmore</AppTitle>}
+          {Auth.loggedIn() ? <AppTitle>Welcome , Happy Quizmore time!</AppTitle> : <AppTitle>Happy Quizzmore</AppTitle>}
           {startQuiz ? <></> : <StartQuizButton onClick={handleStartQuiz}>Start Quiz</StartQuizButton>}
           {startQuiz && <Quiz />}
           {showSignup && <SignupModal setShowSignup={setShowSignup} />}
