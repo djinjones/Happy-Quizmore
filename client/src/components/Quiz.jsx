@@ -1,9 +1,10 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useQuery } from '@apollo/client';
-import { useApolloClient } from '@apollo/client';
+import { useQuery, useMutation,  useApolloClient } from '@apollo/client';
 import { GET_QUESTIONS } from '../utils/queries';
+
+
 
 const QuizContainer = styled.div`
   display:flex;
@@ -13,9 +14,6 @@ const QuizContainer = styled.div`
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #f9f9f9;
-  scroll-snap-type: x mandatory;
- 
-  overflow-x: scroll;
 
   @media (max-width: 768px) {
     padding: 10px;
@@ -79,32 +77,44 @@ const QuestionContainer = styled.div`
 
 const QuestionTitle = styled.h2`
   font-size: 1.2em;
+  color: ${(props) => props.theme.text}; /* Adjusted for theme */
 `;
 
-const OptionLabel = styled.label`
-  display: block;
-  margin: 5px 0;
+const Input = styled.input`
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  margin-top: 10px;
+  border: 1px solid ${(props) => props.theme.borderColor};
+  border-radius: 4px;
+  background-color: ${(props) => props.theme.inputBackground};
+  color: ${(props) => props.theme.text};
 `;
 
 const Image = styled.img`
   width: 100%;
   height: auto;
+  border-radius: 4px; /* Add rounded corners to the image */
+  margin-bottom: 10px; /* Add spacing between the image and options */
 `;
 
 const SubmitButton = styled.button`
-  background-color: grey;
-  color: white;
+  background-color: ${(props) => props.theme.buttonBackground};
+  color: ${(props) => props.theme.buttonText};
   padding: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 1em;
   &:hover {
-    background-color: #45a049;
+    background-color: ${(props) => props.theme.buttonHover};
   }
 `;
 
-const Quiz = (props) => {
+
+
+
+const Quiz = () => {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
@@ -145,10 +155,12 @@ const Quiz = (props) => {
     fetchQuestions();
   }, [client]);
 
-  const handleChange = (questionId, answer) => {
+  const handleChange = (questionId, value) => {
+    // Process the input by trimming spaces and converting to lowercase
+    const processedAnswer = value.trim().toLowerCase();
     setAnswers({
       ...answers,
-      [questionId]: answer
+      [questionId]: processedAnswer,
     });
   };
 
