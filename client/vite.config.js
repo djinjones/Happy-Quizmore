@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0', // specify the host
-    port: 3000, // specify the port
+    port: isProduction ? 3001 : 3000, // specify the port
     open: !isProduction, 
     // strictPort: true, // if true, exit if the port is already in use
     proxy: {
