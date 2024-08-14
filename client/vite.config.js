@@ -13,7 +13,7 @@ export default defineConfig({
       // proxy requests matching the context to the target
       '/graphql': {
         target: isProduction
-        ? process.env.REACT_APP_GRAPHQL_ENDPOINT  // Replace with your production server URL
+        ? process.env.GRAPHQL_SERVER_URL  // Replace with your production server URL
         : 'http://localhost:3001',
         changeOrigin: true,
         secure: false,
