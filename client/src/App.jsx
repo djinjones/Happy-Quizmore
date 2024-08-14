@@ -19,17 +19,21 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import { lightTheme, darkTheme } from './styles/theme'; //  
 
-const graphqlEndpoint = process.env.REACT_APP_GRAPHQL_ENDPOINT;
-console.log(process.env.REACT_APP_GRAPHQL_ENDPOINT);
+// const graphqlEndpoint = process.env.REACT_APP_GRAPHQL_ENDPOINT;
+// console.log(process.env.REACT_APP_GRAPHQL_ENDPOINT);
 
-if (!graphqlEndpoint) {
-  console.error('GraphQL endpoint is not defined');
-} else {
-  console.log('Using GraphQL endpoint:', graphqlEndpoint);
-}
+// if (!graphqlEndpoint) {
+//   console.error('GraphQL endpoint is not defined');
+// } else {
+//   console.log('Using GraphQL endpoint:', graphqlEndpoint);
+// }
+
+
+// using a strict uri with no env variables will not allow this to run on a local server
 
 const httpLink = createHttpLink({
-  uri: graphqlEndpoint || 'http://localhost:3001/graphql',
+  uri: 'https://happy-quizmore.onrender.com/graphql',
+  //'http://localhost:3001/graphql',
   cache: new InMemoryCache(),
 });
 
