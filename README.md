@@ -23,6 +23,17 @@ As of right now we dont have any testing features for this project but we plan t
 ## Links
 [Render App](https://happy-quizmore.onrender.com)
 
+## Screenshots
+
+### Quiz login screen <br>
+![image](./assets/quizLogin.png)
+
+### Quiz questions <br>
+![image](./assets/quizQuestions.png)
+
+### Quiz dark theme <br>
+![image](./assets/quizDark.png)
+
 
 ## Questions
 

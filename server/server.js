@@ -4,6 +4,7 @@ const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
 const { authMiddleware } = require('./utils/auth');
 const  seedDatabase  = require('./utils/seed');
+require('dotenv').config();
 
 const { typeDefs, resolvers } = require('./schema');
 const db = require('./config/connection');
@@ -33,7 +34,7 @@ const startApolloServer = async () => {
     app.use(express.static(path.join(__dirname, '../client/dist')));
 
     app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, '../client/index.html'));
+      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
     });
   }
 

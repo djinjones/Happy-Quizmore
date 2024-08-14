@@ -45,7 +45,8 @@ const QuizContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 840px;
+  width: 840px;
+  height: 900px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid ${(props) => props.theme.borderColor};
@@ -53,6 +54,17 @@ const QuizContainer = styled.div`
   background-color: ${(props) => props.theme.cardBackground};
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative; /* Ensure relative positioning to position scoreboard inside */
+  
+  @media (max-width: 768px) {
+    width: 90%;  /* Adjust width for smaller screens */
+    height: auto; /* Allow height to adjust based on content */
+  }
+
+  @media (max-width: 480px) {
+    width: 100%; /* Use full width on very small screens */
+    height: auto; /* Adjust height based on content */
+    padding: 15px; /* Adjust padding for smaller screens */
+  }
 `;
 
 const ScoreboardContainer = styled.div`
@@ -79,8 +91,8 @@ const ScoreText = styled.div`
 `;
 
 const FeedbackImage = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   position: absolute;
   top: -100px;
   left: 50%;
